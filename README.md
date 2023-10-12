@@ -22,5 +22,5 @@ bun run index.ts
 This project was created using `bun init` in bun v1.0.3. [Bun](https://bun.sh) is a fast all-in-one JavaScript runtime.
 
 To-do:
-[] Cambiar de BIP39 a BIP32
-[] Agregar tokens/nfts
+- [ ] Cambiar de BIP39 a BIP32
+- [ ] Agregar tokens/nfts
