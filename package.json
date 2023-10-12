@@ -1,0 +1,17 @@
+{
+  "name": "poc-blockchain",
+  "module": "index.ts",
+  "type": "module",
+  "devDependencies": {
+    "bun-types": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "ethereum-cryptography": "^2.1.2",
+    "ethers": "^6.8.0",
+    "level": "^8.0.0",
+    "tweetnacl": "^1.0.3"
+  }
+}
