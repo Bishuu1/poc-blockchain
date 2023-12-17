@@ -58,6 +58,10 @@ class Blockchain {
                 reject(new Error("Cannot add invalid transaction to chain"));
             }
             this.pendingTransactions.push(transaction);
+            // Si hay 10 transacciones pendientes, minar un nuevo bloque
+            if (this.pendingTransactions.length >= 10) {
+                await this.addBlock();
+            }
             resolve();
         });
     }

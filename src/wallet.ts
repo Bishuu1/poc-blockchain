@@ -32,6 +32,7 @@
       console.log("Frase Semilla: " + seedArray.join(' '));
       return seedArray.join(' ');
     }
+
     signTransaction(transaction: Transaction): string {
       const receiverWallet = this;
       const sign = nacl.sign(Buffer.from(

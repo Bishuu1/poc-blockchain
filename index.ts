@@ -37,7 +37,9 @@ app.post('/transaction', async (req: express.Request, res:express.Response) => {
       return res.status(400).json({ message: "Datos insuficientes para la transacción" });
     }
 
-    // Crear la transacción
+    if ( fromAddress)
+
+    // Crear la transacción 
     const transaction = new Transaction(fromAddress, toAddress, amount);
     transaction.signature = signature;
 
@@ -61,6 +63,23 @@ app.post('/mine', async (req: express.Request, res:express.Response) => {
   const newBlock = await blockchain.addBlock();
   res.json({ message: 'Nuevo bloque minado', newBlock });
 });
+
+// Ruta para crear una nueva wallet
+app.post('/wallet/create', (req: express.Request, res:express.Response) => {
+  try {
+    const mnemonic = Wallet.createSeed();
+    const wallet = new Wallet(mnemonic);
+
+    res.json({ 
+      message: 'Wallet creada exitosamente', 
+      publicKey: wallet.publicKey.toString(),
+      mnemonic
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Error al crear la wallet", error });
+  }
+});
+
 
 // Configura el puerto y el servidor
 const PORT = 3000;
