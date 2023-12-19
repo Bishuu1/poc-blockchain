@@ -8,11 +8,13 @@
   class Wallet {
     public publicKey: any;
     private privateKey: any;
-    constructor(mnemonic: string) {
+    private amount: number;
+    constructor(mnemonic: string, amount: number = 0) {
       const seedBytes = crypto.pbkdf2Sync(mnemonic, "salty", 2048, 32, 'sha256');
       const keyPair = nacl.sign.keyPair.fromSeed(seedBytes);
       this.publicKey = keyPair.publicKey;
       this.privateKey = keyPair.secretKey;
+      this.amount = amount;
     }
 
     static createSeed(wordCount: number = 12): string {
@@ -33,6 +35,12 @@
       return seedArray.join(' ');
     }
 
+    getBalance(): number {
+      return this.amount;
+    }
+
+    
+    
     signTransaction(transaction: Transaction): string {
       const receiverWallet = this;
       const sign = nacl.sign(Buffer.from(

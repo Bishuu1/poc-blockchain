@@ -1,38 +1,37 @@
-import { Stream } from 'libp2p';
+import * as Libp2p from 'libp2p';
 import readline from 'readline';
+import { pipe } from 'it-pipe';
+import { toBuffer } from 'it-to-buffer';
+import BufferList from 'bl/BufferList';
 
 class Communicator {
   constructor(private libp2pNode: any) {}
 
   setupStreamHandler(protocol: string) {
-    this.libp2pNode.handle(protocol, (stream: Stream) => {
+    this.libp2pNode.handle(protocol, async ({ stream }) => {
+      console.log(`Stream received`);
       this.handleStream(stream);
     });
   }
 
-  private handleStream(stream: Stream) {
-    console.log(`Stream received from peer ${stream.id}`);
-
+  private async handleStream(stream: any) {
     const rl = readline.createInterface({
       input: process.stdin,
       output: process.stdout
     });
 
-    const readStream = () => {
-      readline.clearLine(process.stdout, 0);
-      readline.cursorTo(process.stdout, 0);
-      process.stdout.write('\x1b[32m> \x1b[0m');
-    };
-
     rl.on('line', (line) => {
-      stream.sink.push(Buffer.from(`${line}\n`));
-      readStream();
+      stream.sink.push(Buffer.from(line + '\n'));
     });
 
-    stream.source.forEach(async (msg: any) => {
-      console.log(`\x1b[32m${msg.toString().trim()}\x1b[0m`);
-      readStream();
-    });
+    await pipe(
+      stream.source,
+      async function (source: AsyncIterable<BufferList>) {
+        for await (const msg of source) {
+          console.log(`Received message: ${msg.toString().trim()}`);
+        }
+      }
+    );
   }
 }
 
