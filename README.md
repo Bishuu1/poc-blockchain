@@ -24,3 +24,4 @@ This project was created using `bun init` in bun v1.0.3. [Bun](https://bun.sh) i
 To-do:
 - [ ] Cambiar de BIP39 a BIP32
 - [ ] Agregar tokens/nfts
+- [ ] Corregir funcionamiento de nodos y red (probablemente es necesario cambiar Bun por NPM)
